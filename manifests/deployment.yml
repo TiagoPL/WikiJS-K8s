@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wikijs-comercial
+  namespace: wikis
+  labels:
+    app: wikijs-comercial
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wikijs-comercial
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: wikijs-comercial
+    spec:
+      containers:
+      - image: requarks/wiki:2.5
+        name: wikijs-comercial
+        ports:
+        - containerPort: 3000
+          name: http
+        envFrom:
+        - secretRef:
+            name: wiki-comercial-secret
+        - configMapRef:
+            name: wikijs-comercial-environment
+        resources:
+          requests:
+            memory: 512Mi
+            cpu: 500m
+          limits:
+            memory: 2Gi
+            cpu: 2000m

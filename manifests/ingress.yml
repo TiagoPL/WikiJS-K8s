@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-wikijs-comercial
+  namespace: wikis
+  labels:
+    app: wikijs-comercial
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+      - wiki-comercial.domain.com.br
+    secretName: tls-domain
+  rules:
+  - host: wiki-comercial.domain.com.br
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wikijs-comercial
+            port:
+              number: 3000

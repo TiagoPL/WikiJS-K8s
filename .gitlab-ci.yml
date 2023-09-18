@@ -1,0 +1,12 @@
+deploy:
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
+  script:
+    - kubectl config get-contexts
+    - kubectl config use-context consultoria/infraestrutura/infra-proxmox-wikicomercial:agente-wikicomercial
+    - git clone https://k8s:$k8s_access_token@gitlab.domain-name.com.br/consultoria/infraestrutura/infra-proxmox-wikicomercial.git
+    - cd infra-proxmox-wikicomercial
+    - kubectl get pods --namespace wikis
+    - kubectl apply -f ./manifests
+    - kubectl get pods --namespace wikis
